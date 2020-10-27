@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+
+<title>Item Directory</title>
+</head>
+<body>
+
+<div class="container">
+	<h2> Item Directory </h2>
+	
+	<hr>
+	
+	<a th:href="@{/item/save/form}" class="btn btn-primary btn-sm mb-3">Add Item</a>
+	
+	<form th:action="@{/logout}" method="POST" style="float:right;">
+		<input type="submit" value="Logout" class="btn btn-danger btn-sm mb-3"/>
+	</form>
+	
+	<hr>
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>ItemID</th>
+				<th>ItemName</th>
+				<th>Price</th>
+				<th>StockQuantity</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="item : ${items}">
+				<td th:text="${item.itemId}" />
+				<td th:text="${item.itemName}"/>
+				<td th:text="${item.price}"/>
+				<td th:text="${item.stockQuantity}"/>
+				
+				<td>
+				<a th:href="@{/item/update/form(itemId=${item.itemId})}" class="btn btn-info btn-sm">
+					Update
+				</a>
+				
+				<a th:href="@{/item/delete(itemId=${item.itemId})}" class="btn btn-danger btn-sm"
+					onclick="if(!(confirm('Are you sure about deleting this item?'))) return false">
+					Delete
+				</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</div>
+</body>
+</html>
