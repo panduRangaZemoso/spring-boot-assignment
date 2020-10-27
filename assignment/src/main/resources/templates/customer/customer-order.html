@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<!--  -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<title>My Orders</title>
+</head>
+<body>
+	
+	<div id="accordion" class="container">
+		<h2>My Orders</h2>
+		<p th:text="'Welcome ' + ${customer.customerName}" class="text-success" />
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		  <ul class="navbar-nav">
+		 	 <li class="nav-item">
+		      <a class="nav-link" th:href=@{/customer/home(customerId=${customer.customerId})}>Home</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link" th:href=@{/customer/orders(customerId=${customer.customerId})}>My Orders</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link" th:href=@{/customer/cart(customerId=${customer.customerId})}>My Cart</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link" th:href=@{/customer/update/form(customerId=${customer.customerId})}>Update Details</a>
+		    </li>
+		    <li class="nav-item">
+		      <a class="nav-link" th:href="@{/customer/login/form}">Logout</a>
+		    </li>
+		  </ul>
+		</nav>
+		
+		<hr>
+		
+		<p th:if="${#lists.isEmpty(orders)}">No Orders to display, please order something from home page</p>
+	
+		<div class="card" th:each="order, iOrder : ${orders}">	
+		  	
+	      <div class="card-header">
+	        <a class="card-link" data-toggle="collapse" th:href="'#collapse'+${iOrder.index}" th:text=" 'Order Id : ' + ${order.orderId}"></a>
+	        <p th:text="'Delivery Date : '+${#calendars.format(order.expectedDeliveryDate ,'dd MMMM yyyy hh:mm aa')}"/>
+	      </div>
+	      
+	     <div th:id="'collapse'+${iOrder.index}" class="collapse" data-parent="#accordion">
+	      	<div class="card-body">
+				<table class="table table-bordered table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th>ItemName</th>
+							<th>Price</th>
+							<th>OrderQuantity</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr th:each="item : ${order.items}">
+							<td th:text="${item.itemName}"/>
+							<td th:text="${item.unitPrice}"/>
+							<td th:text="${item.quantity}"/>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		  </div>
+		  
+		</div>
+		
+		<hr>
+		  
+		<a th:href="@{/customer/home(customerId=${customer.customerId})}">Back to Home</a>
+		
+	</div>		
+
+</body>
+</html>
